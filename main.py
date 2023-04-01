@@ -15,6 +15,8 @@ from pygments.formatters import HtmlFormatter
 
 
 
+
+
 # Crie um objeto ArgumentParser
 parser = argparse.ArgumentParser()
 
@@ -30,12 +32,34 @@ if args.verbose:
 
 
 token = os.getenv('token')
+API_URL = "https://api-json-zeta.vercel.app/dados.json"
 
 
 
 # Crie um objeto bot do discord
 
 bot = commands.Bot(command_prefix="!", help_command=None, intents=discord.Intents.all())
+
+
+@bot.event
+async def on_ready():
+    print('Logged in as {0.user}'.format(bot))
+
+@bot.event
+async def anime(message):
+    if message.author == bot.user:
+        return
+
+    if message.content.startswith(name='anime'):
+        # Chama a API de piadas
+        response = requests.get('https://api-json-zeta.vercel.app/dados.json')
+
+        if response.status_code == 200:
+            # Exibe a piada no Discord
+            data = response.json()
+            await message.channel.send(f"{data['setup']}\n\n{data['punchline']}")
+        else:
+            await message.channel.send("Não foi possível encontrar uma piada.")
 
 
 
@@ -66,89 +90,16 @@ async def helpanime(ctx):
 
 
 #Minha API
-@bot.command(name='animes1')
-async def animes1(ctx):
-    response =  requests.get('http://localhost:5000/animes')
+@bot.command(name='anime')
+async def anime(ctx, id: int):
+    response = requests.get(f"{API_URL}/{id}")
     json = response.json()
-    
-    
-    await ctx.send(f"```html\nTitulo: {json[0]['titulo']}\n\nSobre: {json[0]['sobre']}\n\nAutor: {json[0]['autor']}\n```")
-@bot.command(name='animes2')
-async def animes2(ctx):
-    response =  requests.get('http://localhost:5000/animes')
-    json = response.json()
-    
-    
-    await ctx.send(f"```html\nTitulo: {json[1]['titulo']}\n\nSobre: {json[1]['sobre']}\n\nAutor: {json[1]['autor']}\n```")
-@bot.command(name = 'animes3')
-async def animes3(ctx):
-    response =  requests.get('http://localhost:5000/animes')
-    json = response.json()
-    
-    
-    await ctx.send(f"```html\nTitulo: {json[2]['titulo']}\n\nSobre: {json[2]['sobre']}\n\nAutor: {json[2]['autor']}\n```")
-@bot.command(name = 'animes4')
-async def animes4(ctx):
-    response =  requests.get('http://localhost:5000/animes')
-    json = response.json()
-    
-    
-    await ctx.send(f"```html\nTitulo: {json[3]['titulo']}\n\nSobre: {json[3]['sobre']}\n\nAutor: {json[3]['autor']}\n```")
-@bot.command(name = 'animes5')
-async def animes5(ctx):
-    response =  requests.get('http://localhost:5000/animes')
-    json = response.json()
-    
-    
-    await ctx.send(f"```html\nTitulo: {json[4]['titulo']}\n\nSobre: {json[4]['sobre']}\n\nAutor: {json[4]['autor']}\n```")
 
-@bot.command(name = 'animes6')
-async def animes6(ctx):
-    response =  requests.get('http://localhost:5000/animes')
-    json = response.json()
-    
-    
-    await ctx.send(f"```html\nTitulo: {json[5]['titulo']}\n\nSobre: {json[5]['sobre']}\n\nAutor: {json[5]['autor']}\n```")
+    await ctx.send(f"```html\nTitulo: {json[id]['titulo']}\n\nSobre: {json[id]['sobre']}\n\nAutor: {json[id]['autor']}\n```")
 
-@bot.command(name = 'animes7')
-async def animes7(ctx):
-    response =  requests.get('http://localhost:5000/animes')
-    json = response.json()
-    
-    
-    await ctx.send(f"```html\nTitulo: {json[6]['titulo']}\n\nSobre: {json[6]['sobre']}\n\nAutor: {json[6]['autor']}\n```")
 
-@bot.command(name = 'animes8')
-async def animes8(ctx):
-    response =  requests.get('http://localhost:5000/animes')
-    json = response.json()
-    
-    
-    await ctx.send(f"```html\nTitulo: {json[7]['titulo']}\n\nSobre: {json[7]['sobre']}\n\nAutor: {json[7]['autor']}\n```")
 
-@bot.command(name = 'animes9')
-async def animes9(ctx):
-    response =  requests.get('http://localhost:5000/animes')
-    json = response.json()
-    
-    
-    await ctx.send(f"```html\nTitulo: {json[8]['titulo']}\n\nSobre: {json[8]['sobre']}\n\nAutor: {json[8]['autor']}\n```")
 
-@bot.command(name = 'animes10')
-async def animes10(ctx):
-    response =  requests.get('http://localhost:5000/animes')
-    json = response.json()
-    
-    
-    await ctx.send(f"```html\nTitulo: {json[9]['titulo']}\n\nSobre: {json[9]['sobre']}\n\nAutor: {json[9]['autor']}\n```")
-
-@bot.command(name = 'animes11')
-async def animes11(ctx):
-    response =  requests.get('http://localhost:5000/animes')
-    json = response.json()
-    
-    
-    await ctx.send(f"```html\nTitulo: {json[10]['titulo']}\n\nSobre: {json[10]['sobre']}\n\nAutor: {json[10]['autor']}\n```")
 
 
     

@@ -1,5 +1,19 @@
 from flask import Flask,  request
 import json
+import pymongo
+
+# Conectando ao MongoDB
+client = pymongo.MongoClient("mongodb://localhost:27017/")
+
+# Verificando a conexão
+if client:
+    print("Conexão bem-sucedida!")
+else:
+    print("Erro ao conectar ao MongoDB.")
+
+# Listando os bancos de dados disponíveis
+print(client.list_database_names())
+
 
 
 
@@ -126,4 +140,4 @@ def excluir_anime(id):
 
 
 
-app.run(port=5000,host='localhost',debug=True)
+app.run(port=5000,debug=True)
